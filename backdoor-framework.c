@@ -47,6 +47,7 @@
 
 #define SERVER_ADDR "./backdoor-framework-socket"
 #define MAX_BYTES_IN_COMMAND 3
+#define NELMTS(X) (sizeof(X)/sizeof(*X))
 
 /* Commands that can be executed by clients. Explicitly numbered so they're easy to identify when using the client. In order to
  * avoid confusion in shell scripts where clients are called with hard-coded numbers, please don't change these numbers once
@@ -207,58 +208,72 @@ server(void) {
     }
 }
 
+/* Parse a strings into words at white space. */
+static size_t
+parse_line(char *string, char *words[], size_t nwords) {
+    int retval = 0;
+    char *token;
+    while (retval<nwords && (token = strtok(string, " \t\n\r\f\v"))) {
+        string = NULL;
+        words[retval++] = token;
+    }
+    return retval;
+}
+
+/* Parse a client command and send it to the server. */
+static void
+send_command(int server, char *words[], size_t nwords) {
+    uint8_t command[MAX_BYTES_IN_COMMAND];
+    size_t i;
+
+    if (0==nwords)
+        return;
+    if (nwords > MAX_BYTES_IN_COMMAND) {
+        fputs("command has too many words\n", stderr);
+        exit(1);
+    }
+
+    /* Command */
+    if (0==strcmp(words[0], "nop")) {
+        command[0] = CMD_NOP;
+    } else if (0==strcmp(words[0], "exit")) {
+        command[0] = CMD_EXIT;
+    } else if (0==strcmp(words[0], "set")) {
+        command[0] = CMD_SET_VARIABLE;
+    } else {
+        command[0] = strtoul(words[0], NULL, 0);
+    }
+
+    /* Command args */
+    for (i=1; i<nwords; ++i) {
+        if (command[0]==CMD_SET_VARIABLE && 1==i) {
+            if (0==strcmp(words[i], "voltage")) {
+                command[i] = VAR_VOLTAGE;
+            } else if (0==strcmp(words[i], "amperage")) {
+                command[i] = VAR_AMPERAGE;
+            } else if (0==strcmp(words[i], "min_voltage")) {
+                command[i] = VAR_MIN_VOLTAGE;
+            } else if (0==strcmp(words[i], "max_voltage")) {
+                command[i] = VAR_MAX_VOLTAGE;
+            } else if (0==strcmp(words[i], "circuit_breaker")) {
+                command[i] = VAR_CIRCUIT_BREAKER;
+            } else {
+                command[i] = strtoul(words[i], NULL, 0);
+            }
+        } else {
+            command[i] = strtoul(words[i], NULL, 0);
+        }
+    }
+
+    if (write(server, command, nwords)!=nwords)
+        fputs("write failed or short write\n", stderr);
+}
+
 /* Act as the client (i.e., pretend we're an agent or hardware sensor) */
 static void
 client(int argc, char *argv[]) {
-    uint8_t command[MAX_BYTES_IN_COMMAND];
-    size_t command_size;
-    int server, i;
+    int server;
     struct sockaddr_un server_addr;
-
-    /* Check command-line */
-    if (argc < 2) {
-        fprintf(stderr, "usage: %s COMMAND [ARG...]\n"
-                "  where COMMAND and ARG are non-negative integers in [0,255].\n",
-                argv[0]);
-        exit(1);
-    }
-    command_size = argc-1;
-    if (command_size > MAX_BYTES_IN_COMMAND) {
-        fputs("too many arguments\n", stderr);
-        exit(1);
-    }
-
-    /* Obtain command from command-line */
-    if (0==strcmp(argv[1], "nop")) {
-        command[0] = CMD_NOP;
-    } else if (0==strcmp(argv[1], "exit")) {
-        command[0] = CMD_EXIT;
-    } else if (0==strcmp(argv[1], "set")) {
-        command[0] = CMD_SET_VARIABLE;
-    } else {
-        command[0] = strtoul(argv[1], NULL, 0);
-    }
-
-    /* Obtain command arguments from command-line */
-    for (i=2; i<argc; ++i) {
-        if (command[0]==CMD_SET_VARIABLE) {
-            if (0==strcmp(argv[i], "voltage")) {
-                command[i-1] = VAR_VOLTAGE;
-            } else if (0==strcmp(argv[i], "amperage")) {
-                command[i-1] = VAR_AMPERAGE;
-            } else if (0==strcmp(argv[i], "min_voltage")) {
-                command[i-1] = VAR_MIN_VOLTAGE;
-            } else if (0==strcmp(argv[i], "max_voltage")) {
-                command[i-1] = VAR_MAX_VOLTAGE;
-            } else if (0==strcmp(argv[i], "circuit_breaker")) {
-                command[i-1] = VAR_CIRCUIT_BREAKER;
-            } else {
-                command[i-1] = strtoul(argv[i], NULL, 0);
-            }
-        } else {
-            command[i-1] = strtoul(argv[i], NULL, 0);
-        }
-    }
 
     /* Open connection to server */
     server = socket(PF_LOCAL, SOCK_STREAM, 0);
@@ -274,9 +289,24 @@ client(int argc, char *argv[]) {
         exit(1);
     }
 
-    /* Send command */
-    if (write(server, command, command_size)!=command_size)
-        fputs("write failed or short write\n", stderr);
+    if (argc==2 && 0==strcmp(argv[1], "-")) {
+        /* Read commands from standard input instead of the command-line. */
+        while (1) {
+            char line[256], *words[16];
+            size_t nwords;
+            if (isatty(0))
+                fputs("client> ", stdout);
+            if (!fgets(line, sizeof line, stdin))
+                break;
+            nwords = parse_line(line, words, NELMTS(words));
+            send_command(server, words, nwords);
+        }
+    } else {
+        /* Get command from the command-line. */
+        char **words = argv+1;
+        size_t nwords = argc-1;
+        send_command(server, words, nwords);
+    }
 }
 
 int
