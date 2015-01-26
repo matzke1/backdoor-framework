@@ -45,6 +45,14 @@
 #include <sys/un.h>
 #include <unistd.h>
 
+/*******************************************************************************************************************************
+ *                                      Back doors
+ * Define any of these cpp symbols on the compiler command line (e.g., -DROBB_BACKDOOR_1) to enable.
+ *
+ * ROBB_BACKDOOR_1:
+ *     Trips the circuit breaker when vars[0] == 123.  Demo with "./a.out set 0 123".
+ *******************************************************************************************************************************/
+
 #define SERVER_ADDR "./backdoor-framework-socket"
 #define MAX_BYTES_IN_COMMAND 3
 #define NELMTS(X) (sizeof(X)/sizeof(*X))
@@ -118,6 +126,20 @@ trip_breaker_based_on_voltage(void) {
         fputs("*** PROTECTED: circuit breaker tripped\n", stdout);
     }
 }
+
+#ifdef ROBB_BACKDOOR_1
+/* If VAR_UNUSED is set to 123 then the circuit breaker trips.  Another way to get the same effect is to modify the "if"
+ * condition in trip_breaker_based_on_voltage.  Another way is to temporarilty set VAR_VOLTAGE to something that's out of
+ * range. Another way is to temporarily change the limits so the voltage is out of range long enough to trip the breaker. */
+static void
+trip_breaker_voltage_123(void) {
+    int trip = vars[VAR_CIRCUIT_BREAKER]!=0 && vars[VAR_UNUSED]==123;
+    if (trip) {
+        vars[VAR_CIRCUIT_BREAKER] = 0;
+        fputs("*** BACKDOOR: circuit breaker tripped\n", stdout);
+    }
+}
+#endif
     
 /* Server internal processing loop.  In real hardware, this would be interrupt-based where all the real firmware work occurs,
  * but in this framework we just call it once per command received from a client. */
@@ -125,6 +147,9 @@ static void
 server_interrupt(void) {
     fputs("server interrupt\n", stdout);
     trip_breaker_based_on_voltage();
+#ifdef ROBB_BACKDOOR_1
+    trip_breaker_voltage_123();
+#endif
     show_variables();
 }
 
