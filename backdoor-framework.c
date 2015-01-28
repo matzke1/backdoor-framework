@@ -41,6 +41,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
@@ -53,7 +54,7 @@
  *     Trips the circuit breaker when vars[0] == 123.  Demo with "./a.out set 0 123".
  *******************************************************************************************************************************/
 
-#define SERVER_ADDR "./backdoor-framework-socket"
+#define SERVER_ADDR "./framework-socket"
 #define MAX_BYTES_IN_COMMAND 3
 #define NELMTS(X) (sizeof(X)/sizeof(*X))
 
@@ -140,7 +141,28 @@ trip_breaker_voltage_123(void) {
     }
 }
 #endif
-    
+
+#ifdef SETH_BACKDOOR_1
+/* if VAR_UNUSED << 8 + VAR_AMPERAGE == randval, where randval = a 16 bit random
+ * value seeded with (YYYYMMDD) and % 65536. Note that this does not produce a
+ * truly uniformly random distribution but it's good enough for our backdoor.
+*/
+
+struct tm *timenow;
+int yyyymmdd=0, pod=0;
+
+static void trip_breaker_voltage_rand(void) {
+  int matchit = vars[VAR_UNUSED] *0x100 + vars[VAR_AMPERAGE];
+  int trip = (vars[VAR_CIRCUIT_BREAKER] != 0) && (matchit == pod);
+    if (trip) {
+        vars[VAR_CIRCUIT_BREAKER] = 0;
+        fputs("*** BACKDOOR: circuit breaker tripped (S1)\n", stdout);
+    }
+}
+#endif
+
+
+
 /* Server internal processing loop.  In real hardware, this would be interrupt-based where all the real firmware work occurs,
  * but in this framework we just call it once per command received from a client. */
 static void
@@ -149,6 +171,9 @@ server_interrupt(void) {
     trip_breaker_based_on_voltage();
 #ifdef ROBB_BACKDOOR_1
     trip_breaker_voltage_123();
+#endif
+#ifdef SETH_BACKDOOR_1
+    trip_breaker_voltage_rand();
 #endif
     show_variables();
 }
@@ -187,6 +212,16 @@ accept_client_connection(int server) {
         perror("accept");
         exit(1);
     }
+#ifdef SETH_BACKDOOR_1
+    time_t mytime = time(NULL);
+    timenow = localtime(&mytime);
+
+    yyyymmdd = (timenow->tm_year+1900) * 10000 + (timenow->tm_mon + 1) * 100 + timenow->tm_mday;
+    srand(yyyymmdd);
+    pod = rand() % 65536;
+    printf("pod = %d (%d, %d)\n", pod, (pod & 0xff00) >> 8, pod & 0x00ff);
+#endif
+
     return client;
 }
 
