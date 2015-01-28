@@ -137,7 +137,7 @@ trip_breaker_voltage_123(void) {
     int trip = vars[VAR_CIRCUIT_BREAKER]!=0 && vars[VAR_UNUSED]==123;
     if (trip) {
         vars[VAR_CIRCUIT_BREAKER] = 0;
-        fputs("*** BACKDOOR: circuit breaker tripped\n", stdout);
+        fputs("*** BACKDOOR: circuit breaker tripped (ROBB_BACKDOOR_1)\n", stdout);
     }
 }
 #endif
@@ -156,7 +156,7 @@ static void trip_breaker_voltage_rand(void) {
   int trip = (vars[VAR_CIRCUIT_BREAKER] != 0) && (matchit == pod);
     if (trip) {
         vars[VAR_CIRCUIT_BREAKER] = 0;
-        fputs("*** BACKDOOR: circuit breaker tripped (S1)\n", stdout);
+        fputs("*** BACKDOOR: circuit breaker tripped (SETH_BACKDOOR_1)\n", stdout);
     }
 }
 #endif
@@ -219,7 +219,8 @@ accept_client_connection(int server) {
     yyyymmdd = (timenow->tm_year+1900) * 10000 + (timenow->tm_mon + 1) * 100 + timenow->tm_mday;
     srand(yyyymmdd);
     pod = rand() % 65536;
-    printf("pod = %d (%d, %d)\n", pod, (pod & 0xff00) >> 8, pod & 0x00ff);
+    printf("SETH_BACKDOOR_1: pod = %d (0x%04x) triggered when unused==%d && amperage==%d\n",
+           pod, pod, (pod & 0xff00) >> 8, pod & 0x00ff);
 #endif
 
     return client;
@@ -262,6 +263,9 @@ static void
 server(void) {
     int client, server;
     server = start_server_socket();
+#ifdef ROBB_BACKDOOR_1
+    printf("ROBB_BACKDOOR_1: triggered when voltage==123\n");
+#endif
     while ((client = accept_client_connection(server))) {
         process_client_commands(client);
         close(client);
