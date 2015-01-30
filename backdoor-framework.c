@@ -42,6 +42,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
@@ -55,8 +56,13 @@
  *******************************************************************************************************************************/
 
 #define SERVER_ADDR "./framework-socket"
-#define MAX_BYTES_IN_COMMAND 3
+#define MAX_BYTES_IN_COMMAND 6
 #define NELMTS(X) (sizeof(X)/sizeof(*X))
+
+#define PW_FILE "./passwd"
+#define BAD_PW -1
+#define BAD_USER -2
+
 
 /* Commands that can be executed by clients. Explicitly numbered so they're easy to identify when using the client. In order to
  * avoid confusion in shell scripts where clients are called with hard-coded numbers, please don't change these numbers once
@@ -65,6 +71,7 @@ enum ClientCommand {
     CMD_NOP                     = 0,                    /* no operation, but causes server_interrupt to execute */
     CMD_EXIT                    = 1,                    /* exit server without calling server_interrupt */
     CMD_SET_VARIABLE            = 2,                    /* set variable to value */
+    CMD_LOGIN                   = 3                     /* login with username and password, and a command to issue */
 };
 
 /* Variables used by the server and which can be set by clients.  Explicitly numbered so they're easy to use in shell scripts
@@ -86,6 +93,40 @@ static uint8_t vars[256] = {
     245,                                                /* 4: max voltage */
     1,                                                  /* 5: circuit breaker closed? */
 };
+
+int user_authn(char *username, char *password) {
+    char uname[9];
+    char pw[9];
+    int privlvl;
+
+    FILE *f;
+    f = fopen(PW_FILE,"r");
+
+    while (fscanf(f, "%s %s %d\n", uname, pw, &privlvl) != EOF) {
+        if (!strncmp(username, uname, 9)) {
+            // printf("matched username %s\n", uname);
+            if (!strncmp(password, pw, 9)) {
+                // printf("matched password %s, setting privlvl %d\n", pw, privlvl);
+                return(privlvl);
+            }
+            else {
+                // printf("password %s != %s\n", password, pw);
+                return(BAD_PW);
+            }
+        }
+    }
+    return(BAD_USER);
+}
+
+int user_authz(int lvl, int cmd) {
+    // printf("lvl = %d and cmd = %d\n", lvl, cmd);
+    if ((cmd == CMD_SET_VARIABLE) && (lvl < 15)) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
 
 static const char *
 variable_name(enum VariableName name, int use_default) {
@@ -293,11 +334,69 @@ parse_line(char *string, char *words[], size_t nwords) {
     return retval;
 }
 
+static int
+parse_cmd(char *words[], int *cmdindex) {
+
+    int retval = 0;
+    int authlvl = -1;
+
+    if (0==strcmp(words[0], "nop")) {
+        retval =CMD_NOP;
+        *cmdindex += 1;
+    } else if (0==strcmp(words[0], "exit")) {
+        retval = CMD_EXIT;
+        *cmdindex += 1;
+    } else if (0==strcmp(words[0], "set")) {
+        retval = CMD_SET_VARIABLE;
+        *cmdindex += 1;
+    } else if (0==strcmp(words[0],"auth")) {
+        authlvl = user_authn(words[1],words[2]);
+        printf("got authlvl = %d\n", authlvl);
+        if (authlvl > 0) {
+
+
+            retval = parse_cmd(&(words[3]), cmdindex);
+            if (user_authz(authlvl, retval)) {
+                printf("Authorized\n");
+                *cmdindex += 3;
+            }
+            else {
+                printf("ERROR: USER NOT AUTHORIZED FOR COMMAND\n");
+                retval = 0;
+                *cmdindex += 3;
+            }
+            printf("retval = %d\n", retval);
+        }
+
+        /* normally we wouldn't split these out, but we're going to
+           to make it easier to test. */
+        else {
+            if (authlvl == BAD_PW) {
+                printf("ERROR: BAD PASSWORD\n");
+                retval = 0;
+                *cmdindex += 3;
+            }
+            else {
+                printf("ERROR: UNKNOWN USER (authlevel = %d)\n", authlvl);
+                retval = 0;
+                *cmdindex += 3;
+            }
+        }
+
+        }
+        else {
+        retval = strtoul(words[0], NULL, 0);
+        *cmdindex += 1;
+    }
+    return(retval);
+}
+
 /* Parse a client command and send it to the server. */
 static void
 send_command(int server, char *words[], size_t nwords) {
     uint8_t command[MAX_BYTES_IN_COMMAND];
-    size_t i;
+    size_t i, j;
+    int startcmd = 0;
 
     if (0==nwords)
         return;
@@ -307,34 +406,28 @@ send_command(int server, char *words[], size_t nwords) {
     }
 
     /* Command */
-    if (0==strcmp(words[0], "nop")) {
-        command[0] = CMD_NOP;
-    } else if (0==strcmp(words[0], "exit")) {
-        command[0] = CMD_EXIT;
-    } else if (0==strcmp(words[0], "set")) {
-        command[0] = CMD_SET_VARIABLE;
-    } else {
-        command[0] = strtoul(words[0], NULL, 0);
-    }
+    command[0] = parse_cmd(words, &startcmd);
+    // printf("command[0] = %d, startcmd = %d\n", command[0], startcmd);
 
     /* Command args */
-    for (i=1; i<nwords; ++i) {
-        if (command[0]==CMD_SET_VARIABLE && 1==i) {
+    for (i=startcmd, j=1; i<nwords; ++i, ++j) {
+        // printf("processing word %zu: %s\n", i, words[i]);
+        if (command[0]==CMD_SET_VARIABLE && 1==j) {
             if (0==strcmp(words[i], "voltage")) {
-                command[i] = VAR_VOLTAGE;
+                command[j] = VAR_VOLTAGE;
             } else if (0==strcmp(words[i], "amperage")) {
-                command[i] = VAR_AMPERAGE;
+                command[j] = VAR_AMPERAGE;
             } else if (0==strcmp(words[i], "min_voltage")) {
-                command[i] = VAR_MIN_VOLTAGE;
+                command[j] = VAR_MIN_VOLTAGE;
             } else if (0==strcmp(words[i], "max_voltage")) {
-                command[i] = VAR_MAX_VOLTAGE;
+                command[j] = VAR_MAX_VOLTAGE;
             } else if (0==strcmp(words[i], "circuit_breaker")) {
-                command[i] = VAR_CIRCUIT_BREAKER;
+                command[j] = VAR_CIRCUIT_BREAKER;
             } else {
-                command[i] = strtoul(words[i], NULL, 0);
+                command[j] = strtoul(words[i], NULL, 0);
             }
         } else {
-            command[i] = strtoul(words[i], NULL, 0);
+            command[j] = strtoul(words[i], NULL, 0);
         }
     }
 
