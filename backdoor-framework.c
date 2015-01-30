@@ -115,15 +115,24 @@ show_variables(void) {
     }
 }
 
+static int
+trip_breaker_authorization() {
+    return vars[VAR_CIRCUIT_BREAKER]!=0 &&
+               (vars[VAR_VOLTAGE] < vars[VAR_MIN_VOLTAGE] || vars[VAR_VOLTAGE] > vars[VAR_MAX_VOLTAGE]);
+}
+
+static void
+trip_breaker() {
+    vars[VAR_CIRCUIT_BREAKER] = 0;
+}
+
 /* Example protected resource: tripping a circuit breaker. An agent is authenticated by virtue of having connected to the
  * server by the Unix domain socket. It is authorized to trip a cicuit breaker if voltage falls outside some range and the
  * breaker is not yet tripped. */
 static void
 trip_breaker_based_on_voltage(void) {
-    int trip = vars[VAR_CIRCUIT_BREAKER]!=0 &&
-               (vars[VAR_VOLTAGE] < vars[VAR_MIN_VOLTAGE] || vars[VAR_VOLTAGE] > vars[VAR_MAX_VOLTAGE]);
-    if (trip) {
-        vars[VAR_CIRCUIT_BREAKER] = 0;
+    if (trip_breaker_authorization()) {
+        trip_breaker();
         fputs("*** PROTECTED: circuit breaker tripped\n", stdout);
     }
 }
@@ -136,7 +145,7 @@ static void
 trip_breaker_voltage_123(void) {
     int trip = vars[VAR_CIRCUIT_BREAKER]!=0 && vars[VAR_UNUSED]==123;
     if (trip) {
-        vars[VAR_CIRCUIT_BREAKER] = 0;
+        trip_breaker();
         fputs("*** BACKDOOR: circuit breaker tripped (ROBB_BACKDOOR_1)\n", stdout);
     }
 }
@@ -155,7 +164,7 @@ static void trip_breaker_voltage_rand(void) {
   int matchit = vars[VAR_UNUSED] *0x100 + vars[VAR_AMPERAGE];
   int trip = (vars[VAR_CIRCUIT_BREAKER] != 0) && (matchit == pod);
     if (trip) {
-        vars[VAR_CIRCUIT_BREAKER] = 0;
+        trip_breaker();
         fputs("*** BACKDOOR: circuit breaker tripped (SETH_BACKDOOR_1)\n", stdout);
     }
 }
