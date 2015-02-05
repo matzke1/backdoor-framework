@@ -193,14 +193,11 @@ int user_authn(char *username, char *password) {
     #endif
     while (fscanf(f, "%s %s %d\n", uname, pw, &privlvl) != EOF) {
         if (!strncmp(username, uname, 9)) {
-            // printf("matched username %s\n", uname);
             if (!strncmp(password, pw, 9)) {
-                // printf("matched password %s, setting privlvl %d\n", pw, privlvl);
                 fclose(f);
                 return(privlvl);
             }
             else {
-                // printf("password %s != %s\n", password, pw);
                 fclose(f);
                 return(AUTHN_BAD_PW);
             }
@@ -211,7 +208,6 @@ int user_authn(char *username, char *password) {
 }
 
 int user_authz(int lvl, int cmd) {
-    // printf("lvl = %d and cmd = %d\n", lvl, cmd);
     if ((cmd == CMD_SET_VARIABLE) && (lvl < 15)) {
         return 1;
     } else {
@@ -272,7 +268,7 @@ int parse_cmd(char *cmd) {
 }
 
 int parse_input(char *input, char *words[], int client_sock) {
-    int i, cmd, authn = -1, authz = -1, nwords=0, valid_cmd=1;
+    int cmd, authn = -1, authz = -1, nwords=0, valid_cmd=1;
     char *auth, *username, *password, *clientmsg;
 
     nwords = parse_line(input, words);
@@ -292,7 +288,6 @@ int parse_input(char *input, char *words[], int client_sock) {
 
     authn = user_authn(username, password);
     if (authn < 0) {
-        // printf("authn failed: %d\n", authn);
         if (authn == AUTHN_BAD_USER) {
             clientmsg = ERR_BAD_USER;
         } else {
