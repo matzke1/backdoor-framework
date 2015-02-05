@@ -1,3 +1,19 @@
+/* Seth, please re-insert the original description here, modified as necessary for you changes. */
+
+/*******************************************************************************************************************************
+ *                                      Back doors
+ * Define any of these cpp symbols on the compiler command line (e.g., -DROBB_BACKDOOR_1) to enable.
+ *
+ * ROBB_BACKDOOR_1:
+ *     Trips the circuit breaker when vars[0] == 123.  Demo with "./a.out set 0 123".
+ *
+ * SETH_BACKDOOR_1:
+ *
+ * SETH_BACKDOOR_2:
+ *
+ * SETH_BACKDOOR_3:
+ *******************************************************************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,13 +31,14 @@
 #define LISTEN_PORT 2222
 
 #define PW_FILE "./passwd"
-#define AUTHN_BAD_PW -1
-#define AUTHN_BAD_USER -2
+#define AUTHENTICATE_BAD_PW -1
+#define AUTHENTICATE_BAD_USER -2
 
 #define OK_CMD "OK\n"
+#define CLIENT_USAGE "syntax: auth USER PASSWD COMMAND ARGS...\n"
 #define ERR_BAD_CMD "Bad or unknown command!\n"
-#define ERR_AUTHN_REQ "Authentication required!\n"
-#define ERR_AUTHZ_REQ "Authorization required!\n"
+#define ERR_AUTHENTICATE_REQ "Authentication required!\n"
+#define ERR_AUTHORIZE_REQ "Authorization required!\n"
 #define ERR_BAD_PW "Bad password!\n"
 #define ERR_BAD_USER "Unknown user!\n"
 #define ERR_BAD_SET "Bad variable / value!\n"
@@ -166,7 +183,7 @@ variable_name(enum VariableName name, int use_default) {
     }
 }
 
-int user_authn(char *username, char *password) {
+int user_authenticate(char *username, char *password) {
     char uname[9];
     char pw[9];
     int privlvl;
@@ -199,15 +216,15 @@ int user_authn(char *username, char *password) {
             }
             else {
                 fclose(f);
-                return(AUTHN_BAD_PW);
+                return(AUTHENTICATE_BAD_PW);
             }
         }
     }
     fclose(f);
-    return(AUTHN_BAD_USER);
+    return(AUTHENTICATE_BAD_USER);
 }
 
-int user_authz(int lvl, int cmd) {
+int user_authorize(int lvl, int cmd) {
     if ((cmd == CMD_SET_VARIABLE) && (lvl < 15)) {
         return 1;
     } else {
@@ -268,7 +285,7 @@ int parse_cmd(char *cmd) {
 }
 
 int parse_input(char *input, char *words[], int client_sock) {
-    int cmd, authn = -1, authz = -1, nwords=0, valid_cmd=1;
+    int cmd, authenticate = -1, authorize = -1, nwords=0, valid_cmd=1;
     char *auth, *username, *password, *clientmsg;
 
     nwords = parse_line(input, words);
@@ -282,13 +299,13 @@ int parse_input(char *input, char *words[], int client_sock) {
     password = words[2];
 
     if (strcmp(auth,"auth")) {
-        write(client_sock, ERR_AUTHN_REQ, strlen(ERR_AUTHN_REQ) );
+        write(client_sock, ERR_AUTHENTICATE_REQ, strlen(ERR_AUTHENTICATE_REQ) );
         return 1;
     }
 
-    authn = user_authn(username, password);
-    if (authn < 0) {
-        if (authn == AUTHN_BAD_USER) {
+    authenticate = user_authenticate(username, password);
+    if (authenticate < 0) {
+        if (authenticate == AUTHENTICATE_BAD_USER) {
             clientmsg = ERR_BAD_USER;
         } else {
             clientmsg = ERR_BAD_PW;
@@ -303,9 +320,9 @@ int parse_input(char *input, char *words[], int client_sock) {
         return 1;
     }
 
-    authz = user_authz(authn, cmd);
-    if (authz) {
-        write(client_sock, ERR_AUTHZ_REQ, strlen(ERR_AUTHZ_REQ));
+    authorize = user_authorize(authenticate, cmd);
+    if (authorize) {
+        write(client_sock, ERR_AUTHORIZE_REQ, strlen(ERR_AUTHORIZE_REQ));
         return 1;
     }
 
@@ -369,7 +386,7 @@ int server(int port)
     listen(socket_desc , 3);
 
     //Accept incoming connection
-    puts("Listening...");
+    printf("Listing at TCP port %d...\n", LISTEN_PORT);
     c = sizeof(struct sockaddr_in);
 
     //accept connection from an incoming client
@@ -382,9 +399,11 @@ int server(int port)
     puts("Connect");
 
     //Receive a message from client
-    while( (read_size = recv(client_sock , client_message , MAX_CMD_LEN , 0)) > 0 )
-    {
-        // printf("read_size = %d\n", read_size);
+    while (1) {
+        write(client_sock, CLIENT_USAGE, strlen(CLIENT_USAGE));
+        if ((read_size = recv(client_sock , client_message , MAX_CMD_LEN , 0)) <= 0)
+            break;
+
         client_message[read_size] = '\0';
         if (parse_input(client_message, words, client_sock) < 0) {
             perror("error in input");
@@ -392,7 +411,6 @@ int server(int port)
         }
         simulate_interrupt();
         show_variables();
-
     }
 
     if(read_size == 0)
