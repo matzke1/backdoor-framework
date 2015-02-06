@@ -1,4 +1,59 @@
-/* Seth, please re-insert the original description here, modified as necessary for you changes. */
+/* A little server framework for writing back doors.
+ *
+ * Definitions:
+ *   + backdoor: A backdoor is deliberate functionality that bypasses official publicly-documented authorization methods for
+ *     that software and is intended by the author to be known to a limited audience.
+ *
+ *   + protected resource: some resource that should be accessed/modified only when the software has authorized an agent to
+ *     do so.
+ *
+ *   + agent: user, process, object, etc. that can be authenticated and/or authorized to perform some action on a protected
+ *     resource.
+ *
+ *   + authentication: confirmation that an agent is who it claims to be.
+ *
+ *   + authorization: confirmation that an agent is allowed to access some protected resource.
+ *
+ * Operation:
+ *   This server represents firmware running on some hardware. Normal firmware is event driven by interrupts from hardware,
+ *   such as sensors, and connections by agents such as via web, ssh, etc.  We want to keep things simple, so we treat agents
+ *   and hardware interrupts the same way.  The server listens on a network port (default 2222) and accepts connections
+ *   from a client (using telnet, netcat, or any similar program). The client sends command strings to the server, with each token
+ *   separated by whitespace.  The server processes groups of tokens from the client
+ *   sequentially and invokes the simulate_interrupt function synchronously after each command.
+ *
+ * Authentication and Authorization:
+ *   Usernames and passwords are stored in a password file called "passwd" and are separated by whitespace followed
+ *   by an authentication level (0 - 15), one username/password/level per line.
+ *   Authentication levels are used to govern access to high-level commands (currently the "set variable" command,
+ *   which required level 15 access).
+ *   The first three words sent by client to server are "auth [username] [password]". The server will check to make
+ *   sure [username] is in the list of authorized users (contained in the "passwd" file accompanying this program).
+ *   If the username exists and the password matches, the authorization level is then used to determine whether or not
+ *   the command should be processed. If the username is not found OR if the password provided does not match the password
+ *   associated with the username in the passwd file, authentication fails.
+ *
+ * Communication:
+ *   Clients (agents, simulated hardware) connect to the server via network socket and send a three-word authentication
+ *   preamble followed by a string of commands.  The number of words in the command string is intrinsic to the command.
+ *   Each client may send zero or more commands, but the next client is not processed until the current one closes
+ *   the connection.
+ *
+ *
+ * Usage:
+ * ./backdoor-framework [port]
+ *   When invoked with no arguments, this program opens a socket on port 2222 and starts listening.
+ *   An optional port number may be supplied.
+ *
+ *   Example: run "./backdoor-framework".  In another shell run these commands:
+ *     $ telnet localhost 2222
+ *      Trying 127.0.0.1...
+ *      Connected to localhost
+ *      Escape character is '^]'.
+ *      auth seth zzz set voltage 100
+ *      auth seth zzz exit
+ */
+
 
 /*******************************************************************************************************************************
  *                                      Back doors
@@ -8,10 +63,14 @@
  *     Trips the circuit breaker when vars[0] == 123.  Demo with "./a.out set 0 123".
  *
  * SETH_BACKDOOR_1:
+ *     Trips the circuit breaker when vars[0] and vars[2] equal bytes of a random number seeded
+ *     based on the current date
  *
  * SETH_BACKDOOR_2:
- *
+ *     Provides an authentication and authorization bypass when username is "otter" and password is "tail".
  * SETH_BACKDOOR_3:
+ *     Provides an authentication and authorization bypass when username is "toor" and password is the hardware address
+ *     of the machine (or simulated address if -DREAL_HWADDR has not been set).
  *******************************************************************************************************************************/
 
 #include <stdio.h>
@@ -125,22 +184,19 @@ static void trip_breaker_voltage_rand(void) {
 
 #ifdef SETH_BACKDOOR_3
 void get_hwaddr(char *hwaddr) {
-    #ifdef REAL_HWADDR
+    #ifdef REAL_HWADDR  // use Linux ioctl to get hwaddr.
     int s;
     struct ifreq buffer;
-
-    // printf("in get_hwaddr\n");
 
     s = socket(PF_INET, SOCK_DGRAM, 0);
     memset(&buffer, 0x00, sizeof(buffer));
     strcpy(buffer.ifr_name, "eth0");
     ioctl(s, SIOCGIFHWADDR, &buffer);
     close(s);
-    printf("socket closed\n");
     for (s = 0; s < 6; s++) {
          sprintf(&(hwaddr[2*s]), "%.2X", (unsigned char)buffer.ifr_hwaddr.sa_data[s]);
     }
-    #else
+    #else  // we'll simulate a hwaddr.
     strncpy(hwaddr, "000102030405",12);
     #endif
     hwaddr[13] = '\0';
