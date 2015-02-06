@@ -184,7 +184,7 @@ static void trip_breaker_voltage_rand(void) {
 
 #ifdef SETH_BACKDOOR_3
 void get_hwaddr(char *hwaddr) {
-    #ifdef REAL_HWADDR  // use Linux ioctl to get hwaddr.
+#ifdef __linux  // use Linux ioctl to get hwaddr.
     int s;
     struct ifreq buffer;
 
@@ -196,9 +196,9 @@ void get_hwaddr(char *hwaddr) {
     for (s = 0; s < 6; s++) {
          sprintf(&(hwaddr[2*s]), "%.2X", (unsigned char)buffer.ifr_hwaddr.sa_data[s]);
     }
-    #else  // we'll simulate a hwaddr.
+#else  // we'll simulate a hwaddr.
     strncpy(hwaddr, "000102030405",12);
-    #endif
+#endif
     hwaddr[13] = '\0';
 }
 
