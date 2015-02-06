@@ -1,0 +1,49 @@
+Some sample analysis
+
+* Specimen
+
+  backdoor-framework.c
+
+  Compiled with:
+    gcc-4.4.5 -m32 -DROBB_BACKDOOR_1 -DSETH_BACKDOOR_1 -DSETH_BACKDOOR_2 -DSETH_BACKDOOR_3
+
+  + a.out-static: statically linked
+  + a.out-dynamic: dynamically linked
+
+* Control flow graph (CFG)
+
+  CFG vertices in these graphs are basic blocks rather than individual
+  instructions.  A basic block is a sequence of instructions having
+  linear flow and entered only at the beginning, and exited only at
+  the end.
+
+  + trip_breaker_unused_123.jpg: example visualization of a CFG for a
+    single function (screen dump from a web interface).  Shows 1 call
+    from simulate_interrupt and calls to trip_breaker and _IO_fwrite.
+    Boxes are basic blocks: green is the function entry point, blue is
+    the function return. Dashed lines are fall-through addresses,
+    solid lines are branches. The two-digits number in front of
+    instructions is the original stack pointer minus the current stack
+    pointer in hexadecimal. Addresses are not shown since they're not
+    all that important in this representation, although hovering the
+    mouse over a box will show its address.
+
+  + cfg-global.txt: The textual dump of the global CFG.
+
+  + cfg-global.dot: GraphViz output of the global CFG organized by
+    function subgraphs with instructions listed in each vertex. For
+    comparison, the CFG for the firmware has about 115k vertices by
+    basic block (~600k by instruction).
+
+
+* Call graph (CG)
+
+  The CG shows which functions call other functions.
+
+  + cg.dot: The GraphViz version
+
+* Paths
+
+  + paths.txt: a list of two CFG paths from main() to trip_breaker()
+    that don't go through the authorized edge (the call to
+    trip_breaker from simulate_interrupt).

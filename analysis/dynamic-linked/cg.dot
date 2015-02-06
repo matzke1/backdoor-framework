@@ -1,0 +1,137 @@
+digraph CG {
+node [  ];
+edge [  ];
+0 [ label="function 0x08048810 \"__libc_start_main@plt\"" href="0x08048810" fillcolor="#f2f2f2" style=filled ]
+1 [ label="function 0x08048980 \"_start\"" href="0x08048980" fillcolor="#f2f2f2" style=filled ]
+2 [ label="function 0x080487b0 \"__gmon_start__@plt\"" href="0x080487b0" fillcolor="#f2f2f2" style=filled ]
+3 [ label="function 0x08048740 \"_init\"" href="0x08048740" fillcolor="#f2f2f2" style=filled ]
+4 [ label="function 0x08048a10 \"frame_dummy\"" href="0x08048a10" fillcolor="#f2f2f2" style=filled ]
+5 [ label="function 0x08049740 \"__do_global_ctors_aux\"" href="0x08049740" fillcolor="#f2f2f2" style=filled ]
+6 [ label="function 0x08048930 \"puts@plt\"" href="0x08048930" fillcolor="#f2f2f2" style=filled ]
+7 [ label="function 0x08048a74 \"trip_breaker\"" href="0x08048a74" fillcolor="#f2f2f2" style=filled ]
+8 [ label="function 0x08048a8f \"trip_breaker_unused_123\"" href="0x08048a8f" fillcolor="#f2f2f2" style=filled ]
+9 [ label="function 0x08048900 \"fwrite@plt\"" href="0x08048900" fillcolor="#f2f2f2" style=filled ]
+10 [ label="function 0x08048aef \"trip_breaker_voltage_rand\"" href="0x08048aef" fillcolor="#f2f2f2" style=filled ]
+11 [ label="function 0x08048870 \"socket@plt\"" href="0x08048870" fillcolor="#f2f2f2" style=filled ]
+12 [ label="function 0x08048b6d \"get_hwaddr\"" href="0x08048b6d" fillcolor="#f2f2f2" style=filled ]
+13 [ label="function 0x08048800 \"memset@plt\"" href="0x08048800" fillcolor="#f2f2f2" style=filled ]
+14 [ label="function 0x08048890 \"memcpy@plt\"" href="0x08048890" fillcolor="#f2f2f2" style=filled ]
+15 [ label="function 0x08048860 \"ioctl@plt\"" href="0x08048860" fillcolor="#f2f2f2" style=filled ]
+16 [ label="function 0x080488f0 \"close@plt\"" href="0x080488f0" fillcolor="#f2f2f2" style=filled ]
+17 [ label="function 0x08048780 \"sprintf@plt\"" href="0x08048780" fillcolor="#f2f2f2" style=filled ]
+18 [ label="function 0x08048a34 \"trip_conditions_met\"" href="0x08048a34" fillcolor="#f2f2f2" style=filled ]
+19 [ label="function 0x08048c40 \"simulate_interrupt\"" href="0x08048c40" fillcolor="#f2f2f2" style=filled ]
+20 [ label="function 0x08048c60 \"variable_name\"" href="0x08048c60" fillcolor="#f2f2f2" style=filled ]
+21 [ label="function 0x080488b0 \"fopen@plt\"" href="0x080488b0" fillcolor="#f2f2f2" style=filled ]
+22 [ label="function 0x08048cd4 \"user_authenticate\"" href="0x08048cd4" fillcolor="#f2f2f2" style=filled ]
+23 [ label="function 0x08048960 \"strcmp@plt\"" href="0x08048960" fillcolor="#f2f2f2" style=filled ]
+24 [ label="function 0x08048880 \"fclose@plt\"" href="0x08048880" fillcolor="#f2f2f2" style=filled ]
+25 [ label="function 0x080488c0 \"printf@plt\"" href="0x080488c0" fillcolor="#f2f2f2" style=filled ]
+26 [ label="function 0x080487a0 \"__isoc99_fscanf@plt\"" href="0x080487a0" fillcolor="#f2f2f2" style=filled ]
+27 [ label="function 0x08048950 \"strncmp@plt\"" href="0x08048950" fillcolor="#f2f2f2" style=filled ]
+28 [ label="function 0x08048e78 \"show_variables\"" href="0x08048e78" fillcolor="#f2f2f2" style=filled ]
+29 [ label="function 0x08048920 \"strtok@plt\"" href="0x08048920" fillcolor="#f2f2f2" style=filled ]
+30 [ label="function 0x08048f24 \"parse_line\"" href="0x08048f24" fillcolor="#f2f2f2" style=filled ]
+31 [ label="function 0x080488e0 \"atoi@plt\"" href="0x080488e0" fillcolor="#f2f2f2" style=filled ]
+32 [ label="function 0x08048f74 \"set_var\"" href="0x08048f74" fillcolor="#f2f2f2" style=filled ]
+33 [ label="function 0x0804908a \"parse_cmd\"" href="0x0804908a" fillcolor="#f2f2f2" style=filled ]
+34 [ label="function 0x0804910a \"parse_input\"" href="0x0804910a" fillcolor="#f2f2f2" style=filled ]
+35 [ label="function 0x080487e0 \"write@plt\"" href="0x080487e0" fillcolor="#f2f2f2" style=filled ]
+36 [ label="function 0x080488a0 \"strlen@plt\"" href="0x080488a0" fillcolor="#f2f2f2" style=filled ]
+37 [ label="function 0x08048e5b \"user_authorize\"" href="0x08048e5b" fillcolor="#f2f2f2" style=filled ]
+38 [ label="function 0x08048970 \"exit@plt\"" href="0x08048970" fillcolor="#f2f2f2" style=filled ]
+39 [ label="function 0x080493a5 \"server\"" href="0x080493a5" fillcolor="#f2f2f2" style=filled ]
+40 [ label="function 0x08048820 \"htons@plt\"" href="0x08048820" fillcolor="#f2f2f2" style=filled ]
+41 [ label="function 0x080488d0 \"bind@plt\"" href="0x080488d0" fillcolor="#f2f2f2" style=filled ]
+42 [ label="function 0x08048830 \"perror@plt\"" href="0x08048830" fillcolor="#f2f2f2" style=filled ]
+43 [ label="function 0x080487f0 \"listen@plt\"" href="0x080487f0" fillcolor="#f2f2f2" style=filled ]
+44 [ label="function 0x08048850 \"accept@plt\"" href="0x08048850" fillcolor="#f2f2f2" style=filled ]
+45 [ label="function 0x080487d0 \"recv@plt\"" href="0x080487d0" fillcolor="#f2f2f2" style=filled ]
+46 [ label="function 0x08048840 \"fflush@plt\"" href="0x08048840" fillcolor="#f2f2f2" style=filled ]
+47 [ label="function 0x08049593 \"main\"" href="0x08049593" fillcolor="#f2f2f2" style=filled ]
+48 [ label="function 0x08048910 \"time@plt\"" href="0x08048910" fillcolor="#f2f2f2" style=filled ]
+49 [ label="function 0x080487c0 \"localtime@plt\"" href="0x080487c0" fillcolor="#f2f2f2" style=filled ]
+50 [ label="function 0x08048790 \"srand@plt\"" href="0x08048790" fillcolor="#f2f2f2" style=filled ]
+51 [ label="function 0x08048940 \"rand@plt\"" href="0x08048940" fillcolor="#f2f2f2" style=filled ]
+52 [ label="function 0x0804973a \"__i686.get_pc_thunk.bx\"" href="0x0804973a" fillcolor="#f2f2f2" style=filled ]
+53 [ label="function 0x080496e0 \"__libc_csu_init\"" href="0x080496e0" fillcolor="#f2f2f2" style=filled ]
+54 [ label="function 0x080489b0 \"__do_global_dtors_aux\"" href="0x080489b0" fillcolor="#f2f2f2" style=filled ]
+55 [ label="function 0x0804976c \"_fini\"" href="0x0804976c" fillcolor="#f2f2f2" style=filled ]
+56 [ label="function 0x08048770 \"DYNAMIC_LINKER_TRAMPOLINE\"" href="0x08048770" fillcolor="#f2f2f2" style=filled ]
+57 [ label="function 0x08048917" href="0x08048917" fillcolor="#f2f2f2" style=filled ]
+1 -> 0 [ label="1 call" ];
+3 -> 2 [ label="1 call" ];
+3 -> 4 [ label="1 call" ];
+3 -> 5 [ label="1 call" ];
+7 -> 6 [ label="1 call" ];
+8 -> 7 [ label="1 call" ];
+8 -> 9 [ label="1 call" ];
+10 -> 7 [ label="1 call" ];
+10 -> 9 [ label="1 call" ];
+12 -> 11 [ label="1 call" ];
+12 -> 13 [ label="1 call" ];
+12 -> 14 [ label="1 call" ];
+12 -> 15 [ label="1 call" ];
+12 -> 16 [ label="1 call" ];
+12 -> 6 [ label="1 call" ];
+12 -> 17 [ label="1 call" ];
+19 -> 18 [ label="1 call" ];
+19 -> 7 [ label="1 call" ];
+19 -> 8 [ label="1 call" ];
+19 -> 10 [ label="1 call" ];
+20 -> 17 [ label="1 call" ];
+22 -> 21 [ label="1 call" ];
+22 -> 23 [ label="4 calls" ];
+22 -> 24 [ label="5 calls" ];
+22 -> 6 [ label="2 calls" ];
+22 -> 25 [ label="1 call" ];
+22 -> 26 [ label="1 call" ];
+22 -> 27 [ label="2 calls" ];
+28 -> 9 [ label="1 call" ];
+28 -> 20 [ label="2 calls" ];
+28 -> 25 [ label="1 call" ];
+30 -> 29 [ label="1 call" ];
+32 -> 31 [ label="2 calls" ];
+32 -> 23 [ label="6 calls" ];
+32 -> 25 [ label="1 call" ];
+33 -> 23 [ label="3 calls" ];
+33 -> 31 [ label="1 call" ];
+34 -> 30 [ label="1 call" ];
+34 -> 35 [ label="6 calls" ];
+34 -> 23 [ label="1 call" ];
+34 -> 22 [ label="1 call" ];
+34 -> 36 [ label="2 calls" ];
+34 -> 33 [ label="1 call" ];
+34 -> 37 [ label="1 call" ];
+34 -> 9 [ label="2 calls" ];
+34 -> 32 [ label="1 call" ];
+34 -> 16 [ label="1 call" ];
+34 -> 38 [ label="1 call" ];
+39 -> 11 [ label="1 call" ];
+39 -> 25 [ label="2 calls" ];
+39 -> 6 [ label="4 calls" ];
+39 -> 40 [ label="1 call" ];
+39 -> 41 [ label="1 call" ];
+39 -> 42 [ label="4 calls" ];
+39 -> 43 [ label="1 call" ];
+39 -> 44 [ label="1 call" ];
+39 -> 35 [ label="1 call" ];
+39 -> 45 [ label="1 call" ];
+39 -> 46 [ label="1 call" ];
+39 -> 34 [ label="1 call" ];
+39 -> 19 [ label="1 call" ];
+39 -> 28 [ label="1 call" ];
+47 -> 6 [ label="2 calls" ];
+47 -> 48 [ label="1 call" ];
+47 -> 49 [ label="1 call" ];
+47 -> 50 [ label="1 call" ];
+47 -> 51 [ label="1 call" ];
+47 -> 25 [ label="2 calls" ];
+47 -> 12 [ label="1 call" ];
+47 -> 31 [ label="1 call" ];
+47 -> 39 [ label="1 call" ];
+53 -> 52 [ label="1 call" ];
+53 -> 3 [ label="1 call" ];
+55 -> 54 [ label="1 call" ];
+57 -> 56 [ label="1 other" ];
+}

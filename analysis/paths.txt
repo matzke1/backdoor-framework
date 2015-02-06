@@ -1,0 +1,462 @@
+Path:
+  0x08048cf9 in function 0x08048cf9 "main"
+    0x08048cf9: push   ebp
+    0x08048cfa: mov    ebp, esp
+    0x08048cfc: and    esp, 0xf0<-16>
+    0x08048cff: push   esi
+    0x08048d00: push   ebx
+    0x08048d01: sub    esp, 0x38
+    0x08048d04: mov    dword ss:[esp + 0x2c], 0x000008ae<2222>
+    0x08048d0c: mov    dword ss:[esp], 0x080a9ca8<"ROBB_BACKDOOR_1 triggered"+17 more>
+    0x08048d13: call   0x0804b1b0<(func)_IO_puts>
+  0x08048d18 in function 0x08048cf9 "main"
+    0x08048d18: mov    dword ss:[esp], 0x00000000
+    0x08048d1f: call   0x08058780<(func)time>
+  0x08048d24 in function 0x08048cf9 "main"
+    0x08048d24: mov    dword ss:[esp + 0x28], eax
+    0x08048d28: lea    eax, [esp + 0x28]
+    0x08048d2c: mov    dword ss:[esp], eax
+    0x08048d2f: call   0x08058720<(func)localtime>
+  0x08048d34 in function 0x08048cf9 "main"
+    0x08048d34: mov    dword ds:[0x080ca434<(data)timenow>], eax
+    0x08048d39: mov    eax, dword ds:[0x080ca434<(data)timenow>]
+    0x08048d3e: mov    eax, dword ds:[eax + 0x14]
+    0x08048d41: imul   edx, eax, 0x00002710<10000>
+    0x08048d47: mov    eax, dword ds:[0x080ca434<(data)timenow>]
+    0x08048d4c: mov    eax, dword ds:[eax + 0x10]
+    0x08048d4f: add    eax, 0x01
+    0x08048d52: imul   eax, eax, 0x64
+    0x08048d55: lea    eax, [edx + eax]
+    0x08048d58: lea    edx, [eax + 0x0121eac0]
+    0x08048d5e: mov    eax, dword ds:[0x080ca434<(data)timenow>]
+    0x08048d63: mov    eax, dword ds:[eax + 0x0c]
+    0x08048d66: lea    eax, [edx + eax]
+    0x08048d69: mov    dword ds:[0x080c8a80<(data)yyyymmdd>], eax
+    0x08048d6e: mov    eax, dword ds:[0x080c8a80<(data)yyyymmdd>]
+    0x08048d73: mov    dword ss:[esp], eax
+    0x08048d76: call   0x08049aa0<(func)srandom>
+  0x08048d7b in function 0x08048cf9 "main"
+    0x08048d7b: call   0x08049ee0<(func)rand>
+  0x08048d80 in function 0x08048cf9 "main"
+    0x08048d80: mov    edx, eax
+    0x08048d82: sar    edx, 0x1f
+    0x08048d85: shr    edx, 0x10
+    0x08048d88: add    eax, edx
+    0x08048d8a: and    eax, 0x0000ffff<65535>
+    0x08048d8f: sub    eax, edx
+    0x08048d91: mov    dword ds:[0x080c8a84<(data)pod>], eax
+    0x08048d96: mov    eax, dword ds:[0x080c8a84<(data)pod>]
+    0x08048d9b: movzx  esi, al
+    0x08048d9e: mov    eax, dword ds:[0x080c8a84<(data)pod>]
+    0x08048da3: and    eax, 0x0000ff00<65280>
+    0x08048da8: mov    ebx, eax
+    0x08048daa: sar    ebx, 0x08
+    0x08048dad: mov    ecx, dword ds:[0x080c8a84<(data)pod>]
+    0x08048db3: mov    edx, dword ds:[0x080c8a84<(data)pod>]
+    0x08048db9: mov    eax, 0x080a9cd4<"SETH_BACKDOOR_1: pod = %d"+52 more>
+    0x08048dbe: mov    dword ss:[esp + 0x10], esi
+    0x08048dc2: mov    dword ss:[esp + 0x0c], ebx
+    0x08048dc6: mov    dword ss:[esp + 0x08], ecx
+    0x08048dca: mov    dword ss:[esp + 0x04], edx
+    0x08048dce: mov    dword ss:[esp], eax
+    0x08048dd1: call   0x0804a640<(func)_IO_printf>
+  0x08048dd6 in function 0x08048cf9 "main"
+    0x08048dd6: mov    dword ss:[esp], 0x080a9d24<"SETH_BACKDOOR_2 triggered"+40 more>
+    0x08048ddd: call   0x0804b1b0<(func)_IO_puts>
+  0x08048de2 in function 0x08048cf9 "main"
+    0x08048de2: mov    dword ss:[esp], 0x080ca424<(data)hwaddr>
+    0x08048de9: call   0x08048379<(func)get_hwaddr>
+  0x08048dee in function 0x08048cf9 "main"
+    0x08048dee: mov    eax, 0x080a9d68<"SETH_BACKDOOR_3 triggered"+38 more>
+    0x08048df3: mov    dword ss:[esp + 0x04], 0x080ca424<(data)hwaddr>
+    0x08048dfb: mov    dword ss:[esp], eax
+    0x08048dfe: call   0x0804a640<(func)_IO_printf>
+  0x08048e03 in function 0x08048cf9 "main"
+    0x08048e03: cmp    dword ss:[ebp + 0x08], 0x02
+    0x08048e07: jne    0x08048e1d
+  0x08048e09 in function 0x08048cf9 "main"
+    0x08048e09: mov    eax, dword ss:[ebp + 0x0c]
+    0x08048e0c: add    eax, 0x04
+    0x08048e0f: mov    eax, dword ds:[eax]
+    0x08048e11: mov    dword ss:[esp], eax
+    0x08048e14: call   0x08049600<(func)atoi>
+  0x08048e19 in function 0x08048cf9 "main"
+    0x08048e19: mov    dword ss:[esp + 0x2c], eax
+  0x08048e1d in function 0x08048cf9 "main"
+    0x08048e1d: mov    eax, dword ss:[esp + 0x2c]
+    0x08048e21: mov    dword ss:[esp], eax
+    0x08048e24: call   0x08048b0b<(func)server>
+  0x08048b0b in function 0x08048b0b "server"
+    0x08048b0b: push   ebp
+    0x08048b0c: mov    ebp, esp
+    0x08048b0e: sub    esp, 0x00001fc8<8136>
+    0x08048b14: mov    dword ss:[esp + 0x08], 0x00000000
+    0x08048b1c: mov    dword ss:[esp + 0x04], 0x00000001
+    0x08048b24: mov    dword ss:[esp], 0x00000002
+    0x08048b2b: call   0x0805bc20<(func)__socket>
+  0x08048b30 in function 0x08048b0b "server"
+    0x08048b30: mov    dword ss:[ebp + 0xec<-20>], eax
+    0x08048b33: cmp    dword ss:[ebp + 0xec<-20>], 0xff<-1>
+    0x08048b37: jne    0x08048b46
+  0x08048b39 in function 0x08048b0b "server"
+    0x08048b39: mov    eax, 0x080a9bd4<"Could not create socket">
+    0x08048b3e: mov    dword ss:[esp], eax
+    0x08048b41: call   0x0804a640<(func)_IO_printf>
+  0x08048b46 in function 0x08048b0b "server"
+    0x08048b46: mov    dword ss:[esp], 0x080a9bec<"Socket created">
+    0x08048b4d: call   0x0804b1b0<(func)_IO_puts>
+  0x08048b52 in function 0x08048b0b "server"
+    0x08048b52: mov    word ss:[ebp + 0xd8<-40>], 0x0002
+    0x08048b58: mov    dword ss:[ebp + 0xdc<-36>], 0x00000000
+    0x08048b5f: mov    eax, dword ss:[ebp + 0x08]
+    0x08048b62: movzx  eax, ax
+    0x08048b65: mov    dword ss:[esp], eax
+    0x08048b68: call   0x0805c3b0<(func)htons>
+  0x08048b6d in function 0x08048b0b "server"
+    0x08048b6d: mov    word ss:[ebp + 0xda<-38>], ax
+    0x08048b71: lea    eax, [ebp + 0xd8<-40>]
+    0x08048b74: mov    dword ss:[esp + 0x08], 0x00000010
+    0x08048b7c: mov    dword ss:[esp + 0x04], eax
+    0x08048b80: mov    eax, dword ss:[ebp + 0xec<-20>]
+    0x08048b83: mov    dword ss:[esp], eax
+    0x08048b86: call   0x0805baa0<(func)__bind>
+  0x08048b8b in function 0x08048b0b "server"
+    0x08048b8b: test   eax, eax
+    0x08048b8d: jns    0x08048ba5
+  0x08048ba5 in function 0x08048b0b "server"
+    0x08048ba5: mov    dword ss:[esp], 0x080a9c0e<"bind done">
+    0x08048bac: call   0x0804b1b0<(func)_IO_puts>
+  0x08048bb1 in function 0x08048b0b "server"
+    0x08048bb1: mov    dword ss:[esp + 0x04], 0x00000003
+    0x08048bb9: mov    eax, dword ss:[ebp + 0xec<-20>]
+    0x08048bbc: mov    dword ss:[esp], eax
+    0x08048bbf: call   0x0805bb30<(func)listen>
+  0x08048bc4 in function 0x08048b0b "server"
+    0x08048bc4: mov    eax, 0x080a9c18<"Listing at TCP port %d...\n">
+    0x08048bc9: mov    dword ss:[esp + 0x04], 0x000008ae<2222>
+    0x08048bd1: mov    dword ss:[esp], eax
+    0x08048bd4: call   0x0804a640<(func)_IO_printf>
+  0x08048bd9 in function 0x08048b0b "server"
+    0x08048bd9: mov    dword ss:[ebp + 0xe8<-24>], 0x00000010
+    0x08048be0: lea    edx, [ebp + 0xe8<-24>]
+    0x08048be3: lea    eax, [ebp + 0xc8<-56>]
+    0x08048be6: mov    dword ss:[esp + 0x08], edx
+    0x08048bea: mov    dword ss:[esp + 0x04], eax
+    0x08048bee: mov    eax, dword ss:[ebp + 0xec<-20>]
+    0x08048bf1: mov    dword ss:[esp], eax
+    0x08048bf4: call   0x0805ba40<(func)accept>
+  0x08048bf9 in function 0x08048b0b "server"
+    0x08048bf9: mov    dword ss:[ebp + 0xf0<-16>], eax
+    0x08048bfc: cmp    dword ss:[ebp + 0xf0<-16>], 0x00
+    0x08048c00: jns    0x08048c18
+  0x08048c18 in function 0x08048b0b "server"
+    0x08048c18: mov    dword ss:[esp], 0x080a9c41<"Connect">
+    0x08048c1f: call   0x0804b1b0<(func)_IO_puts>
+  0x08048c24 in function 0x08048b0b "server"
+    0x08048c24: mov    dword ss:[esp + 0x08], 0x00000029
+    0x08048c2c: mov    dword ss:[esp + 0x04], 0x080a9c4c<"syntax: auth USER PASSWD "+16 more>
+    0x08048c34: mov    eax, dword ss:[ebp + 0xf0<-16>]
+    0x08048c37: mov    dword ss:[esp], eax
+    0x08048c3a: call   0x0805aca0<(func)__libc_write>
+  0x08048c3f in function 0x08048b0b "server"
+    0x08048c3f: mov    dword ss:[esp + 0x0c], 0x00000000
+    0x08048c47: mov    dword ss:[esp + 0x08], 0x00001f40<8000>
+    0x08048c4f: lea    eax, [ebp + 0xffffe088<-8056>]
+    0x08048c55: mov    dword ss:[esp + 0x04], eax
+    0x08048c59: mov    eax, dword ss:[ebp + 0xf0<-16>]
+    0x08048c5c: mov    dword ss:[esp], eax
+    0x08048c5f: call   0x0805bb60<(func)__recv>
+  0x08048c64 in function 0x08048b0b "server"
+    0x08048c64: mov    dword ss:[ebp + 0xf4<-12>], eax
+    0x08048c67: cmp    dword ss:[ebp + 0xf4<-12>], 0x00
+    0x08048c6b: jg     0x08048c75
+  0x08048c75 in function 0x08048b0b "server"
+    0x08048c75: mov    eax, dword ss:[ebp + 0xf4<-12>]
+    0x08048c78: mov    byte ss:[ebp + eax + 0xffffe088<-8056>], 0x00
+    0x08048c80: mov    eax, dword ss:[ebp + 0xf0<-16>]
+    0x08048c83: mov    dword ss:[esp + 0x08], eax
+    0x08048c87: lea    eax, [ebp + 0xffffe048<-8120>]
+    0x08048c8d: mov    dword ss:[esp + 0x04], eax
+    0x08048c91: lea    eax, [ebp + 0xffffe088<-8056>]
+    0x08048c97: mov    dword ss:[esp], eax
+    0x08048c9a: call   0x08048870<(func)parse_input>
+  0x08048c9f in function 0x08048b0b "server"
+    0x08048c9f: test   eax, eax
+    0x08048ca1: jns    0x08048cb6
+  0x08048cb6 in function 0x08048b0b "server"
+    0x08048cb6: call   0x080483a6<(func)simulate_interrupt>
+  0x080483a6 in function 0x080483a6 "simulate_interrupt"
+    0x080483a6: push   ebp
+    0x080483a7: mov    ebp, esp
+    0x080483a9: sub    esp, 0x08
+    0x080483ac: call   0x08048240<(func)trip_conditions_met>
+  0x080483b1 in function 0x080483a6 "simulate_interrupt"
+    0x080483b1: test   eax, eax
+    0x080483b3: je     0x080483ba
+  0x080483b5 in function 0x080483a6 "simulate_interrupt"
+    0x080483b5: call   0x08048280<(func)trip_breaker>
+  0x080483ba in function 0x080483a6 "simulate_interrupt"
+    0x080483ba: call   0x0804829b<(func)trip_breaker_unused_123>
+  0x0804829b in function 0x0804829b "trip_breaker_unused_123"
+    0x0804829b: push   ebp
+    0x0804829c: mov    ebp, esp
+    0x0804829e: sub    esp, 0x28
+    0x080482a1: movzx  eax, byte ds:[0x080c8185]
+    0x080482a8: test   al, al
+    0x080482aa: je     0x080482be
+  0x080482ac in function 0x0804829b "trip_breaker_unused_123"
+    0x080482ac: movzx  eax, byte ds:[0x080c8180<(data)vars>]
+    0x080482b3: cmp    al, 0x7b
+    0x080482b5: jne    0x080482be
+  0x080482b7 in function 0x0804829b "trip_breaker_unused_123"
+    0x080482b7: mov    eax, 0x00000001
+    0x080482bc: jmp    0x080482c3
+  0x080482c3 in function 0x0804829b "trip_breaker_unused_123"
+    0x080482c3: mov    dword ss:[ebp + 0xf4<-12>], eax
+    0x080482c6: cmp    dword ss:[ebp + 0xf4<-12>], 0x00
+    0x080482ca: je     0x080482f9
+  0x080482cc in function 0x0804829b "trip_breaker_unused_123"
+    0x080482cc: call   0x08048280<(func)trip_breaker>
+  0x08048280 in function 0x08048280 "trip_breaker"
+    0x08048280: push   ebp
+    0x08048281: mov    ebp, esp
+    0x08048283: sub    esp, 0x18
+    0x08048286: mov    byte ds:[0x080c8185], 0x00
+    0x0804828d: mov    dword ss:[esp], 0x080a9948<"*** BREAKER TRIPPED">
+    0x08048294: call   0x0804b1b0<(func)_IO_puts>
+Path:
+  0x08048cf9 in function 0x08048cf9 "main"
+    0x08048cf9: push   ebp
+    0x08048cfa: mov    ebp, esp
+    0x08048cfc: and    esp, 0xf0<-16>
+    0x08048cff: push   esi
+    0x08048d00: push   ebx
+    0x08048d01: sub    esp, 0x38
+    0x08048d04: mov    dword ss:[esp + 0x2c], 0x000008ae<2222>
+    0x08048d0c: mov    dword ss:[esp], 0x080a9ca8<"ROBB_BACKDOOR_1 triggered"+17 more>
+    0x08048d13: call   0x0804b1b0<(func)_IO_puts>
+  0x08048d18 in function 0x08048cf9 "main"
+    0x08048d18: mov    dword ss:[esp], 0x00000000
+    0x08048d1f: call   0x08058780<(func)time>
+  0x08048d24 in function 0x08048cf9 "main"
+    0x08048d24: mov    dword ss:[esp + 0x28], eax
+    0x08048d28: lea    eax, [esp + 0x28]
+    0x08048d2c: mov    dword ss:[esp], eax
+    0x08048d2f: call   0x08058720<(func)localtime>
+  0x08048d34 in function 0x08048cf9 "main"
+    0x08048d34: mov    dword ds:[0x080ca434<(data)timenow>], eax
+    0x08048d39: mov    eax, dword ds:[0x080ca434<(data)timenow>]
+    0x08048d3e: mov    eax, dword ds:[eax + 0x14]
+    0x08048d41: imul   edx, eax, 0x00002710<10000>
+    0x08048d47: mov    eax, dword ds:[0x080ca434<(data)timenow>]
+    0x08048d4c: mov    eax, dword ds:[eax + 0x10]
+    0x08048d4f: add    eax, 0x01
+    0x08048d52: imul   eax, eax, 0x64
+    0x08048d55: lea    eax, [edx + eax]
+    0x08048d58: lea    edx, [eax + 0x0121eac0]
+    0x08048d5e: mov    eax, dword ds:[0x080ca434<(data)timenow>]
+    0x08048d63: mov    eax, dword ds:[eax + 0x0c]
+    0x08048d66: lea    eax, [edx + eax]
+    0x08048d69: mov    dword ds:[0x080c8a80<(data)yyyymmdd>], eax
+    0x08048d6e: mov    eax, dword ds:[0x080c8a80<(data)yyyymmdd>]
+    0x08048d73: mov    dword ss:[esp], eax
+    0x08048d76: call   0x08049aa0<(func)srandom>
+  0x08048d7b in function 0x08048cf9 "main"
+    0x08048d7b: call   0x08049ee0<(func)rand>
+  0x08048d80 in function 0x08048cf9 "main"
+    0x08048d80: mov    edx, eax
+    0x08048d82: sar    edx, 0x1f
+    0x08048d85: shr    edx, 0x10
+    0x08048d88: add    eax, edx
+    0x08048d8a: and    eax, 0x0000ffff<65535>
+    0x08048d8f: sub    eax, edx
+    0x08048d91: mov    dword ds:[0x080c8a84<(data)pod>], eax
+    0x08048d96: mov    eax, dword ds:[0x080c8a84<(data)pod>]
+    0x08048d9b: movzx  esi, al
+    0x08048d9e: mov    eax, dword ds:[0x080c8a84<(data)pod>]
+    0x08048da3: and    eax, 0x0000ff00<65280>
+    0x08048da8: mov    ebx, eax
+    0x08048daa: sar    ebx, 0x08
+    0x08048dad: mov    ecx, dword ds:[0x080c8a84<(data)pod>]
+    0x08048db3: mov    edx, dword ds:[0x080c8a84<(data)pod>]
+    0x08048db9: mov    eax, 0x080a9cd4<"SETH_BACKDOOR_1: pod = %d"+52 more>
+    0x08048dbe: mov    dword ss:[esp + 0x10], esi
+    0x08048dc2: mov    dword ss:[esp + 0x0c], ebx
+    0x08048dc6: mov    dword ss:[esp + 0x08], ecx
+    0x08048dca: mov    dword ss:[esp + 0x04], edx
+    0x08048dce: mov    dword ss:[esp], eax
+    0x08048dd1: call   0x0804a640<(func)_IO_printf>
+  0x08048dd6 in function 0x08048cf9 "main"
+    0x08048dd6: mov    dword ss:[esp], 0x080a9d24<"SETH_BACKDOOR_2 triggered"+40 more>
+    0x08048ddd: call   0x0804b1b0<(func)_IO_puts>
+  0x08048de2 in function 0x08048cf9 "main"
+    0x08048de2: mov    dword ss:[esp], 0x080ca424<(data)hwaddr>
+    0x08048de9: call   0x08048379<(func)get_hwaddr>
+  0x08048dee in function 0x08048cf9 "main"
+    0x08048dee: mov    eax, 0x080a9d68<"SETH_BACKDOOR_3 triggered"+38 more>
+    0x08048df3: mov    dword ss:[esp + 0x04], 0x080ca424<(data)hwaddr>
+    0x08048dfb: mov    dword ss:[esp], eax
+    0x08048dfe: call   0x0804a640<(func)_IO_printf>
+  0x08048e03 in function 0x08048cf9 "main"
+    0x08048e03: cmp    dword ss:[ebp + 0x08], 0x02
+    0x08048e07: jne    0x08048e1d
+  0x08048e09 in function 0x08048cf9 "main"
+    0x08048e09: mov    eax, dword ss:[ebp + 0x0c]
+    0x08048e0c: add    eax, 0x04
+    0x08048e0f: mov    eax, dword ds:[eax]
+    0x08048e11: mov    dword ss:[esp], eax
+    0x08048e14: call   0x08049600<(func)atoi>
+  0x08048e19 in function 0x08048cf9 "main"
+    0x08048e19: mov    dword ss:[esp + 0x2c], eax
+  0x08048e1d in function 0x08048cf9 "main"
+    0x08048e1d: mov    eax, dword ss:[esp + 0x2c]
+    0x08048e21: mov    dword ss:[esp], eax
+    0x08048e24: call   0x08048b0b<(func)server>
+  0x08048b0b in function 0x08048b0b "server"
+    0x08048b0b: push   ebp
+    0x08048b0c: mov    ebp, esp
+    0x08048b0e: sub    esp, 0x00001fc8<8136>
+    0x08048b14: mov    dword ss:[esp + 0x08], 0x00000000
+    0x08048b1c: mov    dword ss:[esp + 0x04], 0x00000001
+    0x08048b24: mov    dword ss:[esp], 0x00000002
+    0x08048b2b: call   0x0805bc20<(func)__socket>
+  0x08048b30 in function 0x08048b0b "server"
+    0x08048b30: mov    dword ss:[ebp + 0xec<-20>], eax
+    0x08048b33: cmp    dword ss:[ebp + 0xec<-20>], 0xff<-1>
+    0x08048b37: jne    0x08048b46
+  0x08048b39 in function 0x08048b0b "server"
+    0x08048b39: mov    eax, 0x080a9bd4<"Could not create socket">
+    0x08048b3e: mov    dword ss:[esp], eax
+    0x08048b41: call   0x0804a640<(func)_IO_printf>
+  0x08048b46 in function 0x08048b0b "server"
+    0x08048b46: mov    dword ss:[esp], 0x080a9bec<"Socket created">
+    0x08048b4d: call   0x0804b1b0<(func)_IO_puts>
+  0x08048b52 in function 0x08048b0b "server"
+    0x08048b52: mov    word ss:[ebp + 0xd8<-40>], 0x0002
+    0x08048b58: mov    dword ss:[ebp + 0xdc<-36>], 0x00000000
+    0x08048b5f: mov    eax, dword ss:[ebp + 0x08]
+    0x08048b62: movzx  eax, ax
+    0x08048b65: mov    dword ss:[esp], eax
+    0x08048b68: call   0x0805c3b0<(func)htons>
+  0x08048b6d in function 0x08048b0b "server"
+    0x08048b6d: mov    word ss:[ebp + 0xda<-38>], ax
+    0x08048b71: lea    eax, [ebp + 0xd8<-40>]
+    0x08048b74: mov    dword ss:[esp + 0x08], 0x00000010
+    0x08048b7c: mov    dword ss:[esp + 0x04], eax
+    0x08048b80: mov    eax, dword ss:[ebp + 0xec<-20>]
+    0x08048b83: mov    dword ss:[esp], eax
+    0x08048b86: call   0x0805baa0<(func)__bind>
+  0x08048b8b in function 0x08048b0b "server"
+    0x08048b8b: test   eax, eax
+    0x08048b8d: jns    0x08048ba5
+  0x08048ba5 in function 0x08048b0b "server"
+    0x08048ba5: mov    dword ss:[esp], 0x080a9c0e<"bind done">
+    0x08048bac: call   0x0804b1b0<(func)_IO_puts>
+  0x08048bb1 in function 0x08048b0b "server"
+    0x08048bb1: mov    dword ss:[esp + 0x04], 0x00000003
+    0x08048bb9: mov    eax, dword ss:[ebp + 0xec<-20>]
+    0x08048bbc: mov    dword ss:[esp], eax
+    0x08048bbf: call   0x0805bb30<(func)listen>
+  0x08048bc4 in function 0x08048b0b "server"
+    0x08048bc4: mov    eax, 0x080a9c18<"Listing at TCP port %d...\n">
+    0x08048bc9: mov    dword ss:[esp + 0x04], 0x000008ae<2222>
+    0x08048bd1: mov    dword ss:[esp], eax
+    0x08048bd4: call   0x0804a640<(func)_IO_printf>
+  0x08048bd9 in function 0x08048b0b "server"
+    0x08048bd9: mov    dword ss:[ebp + 0xe8<-24>], 0x00000010
+    0x08048be0: lea    edx, [ebp + 0xe8<-24>]
+    0x08048be3: lea    eax, [ebp + 0xc8<-56>]
+    0x08048be6: mov    dword ss:[esp + 0x08], edx
+    0x08048bea: mov    dword ss:[esp + 0x04], eax
+    0x08048bee: mov    eax, dword ss:[ebp + 0xec<-20>]
+    0x08048bf1: mov    dword ss:[esp], eax
+    0x08048bf4: call   0x0805ba40<(func)accept>
+  0x08048bf9 in function 0x08048b0b "server"
+    0x08048bf9: mov    dword ss:[ebp + 0xf0<-16>], eax
+    0x08048bfc: cmp    dword ss:[ebp + 0xf0<-16>], 0x00
+    0x08048c00: jns    0x08048c18
+  0x08048c18 in function 0x08048b0b "server"
+    0x08048c18: mov    dword ss:[esp], 0x080a9c41<"Connect">
+    0x08048c1f: call   0x0804b1b0<(func)_IO_puts>
+  0x08048c24 in function 0x08048b0b "server"
+    0x08048c24: mov    dword ss:[esp + 0x08], 0x00000029
+    0x08048c2c: mov    dword ss:[esp + 0x04], 0x080a9c4c<"syntax: auth USER PASSWD "+16 more>
+    0x08048c34: mov    eax, dword ss:[ebp + 0xf0<-16>]
+    0x08048c37: mov    dword ss:[esp], eax
+    0x08048c3a: call   0x0805aca0<(func)__libc_write>
+  0x08048c3f in function 0x08048b0b "server"
+    0x08048c3f: mov    dword ss:[esp + 0x0c], 0x00000000
+    0x08048c47: mov    dword ss:[esp + 0x08], 0x00001f40<8000>
+    0x08048c4f: lea    eax, [ebp + 0xffffe088<-8056>]
+    0x08048c55: mov    dword ss:[esp + 0x04], eax
+    0x08048c59: mov    eax, dword ss:[ebp + 0xf0<-16>]
+    0x08048c5c: mov    dword ss:[esp], eax
+    0x08048c5f: call   0x0805bb60<(func)__recv>
+  0x08048c64 in function 0x08048b0b "server"
+    0x08048c64: mov    dword ss:[ebp + 0xf4<-12>], eax
+    0x08048c67: cmp    dword ss:[ebp + 0xf4<-12>], 0x00
+    0x08048c6b: jg     0x08048c75
+  0x08048c75 in function 0x08048b0b "server"
+    0x08048c75: mov    eax, dword ss:[ebp + 0xf4<-12>]
+    0x08048c78: mov    byte ss:[ebp + eax + 0xffffe088<-8056>], 0x00
+    0x08048c80: mov    eax, dword ss:[ebp + 0xf0<-16>]
+    0x08048c83: mov    dword ss:[esp + 0x08], eax
+    0x08048c87: lea    eax, [ebp + 0xffffe048<-8120>]
+    0x08048c8d: mov    dword ss:[esp + 0x04], eax
+    0x08048c91: lea    eax, [ebp + 0xffffe088<-8056>]
+    0x08048c97: mov    dword ss:[esp], eax
+    0x08048c9a: call   0x08048870<(func)parse_input>
+  0x08048c9f in function 0x08048b0b "server"
+    0x08048c9f: test   eax, eax
+    0x08048ca1: jns    0x08048cb6
+  0x08048cb6 in function 0x08048b0b "server"
+    0x08048cb6: call   0x080483a6<(func)simulate_interrupt>
+  0x080483a6 in function 0x080483a6 "simulate_interrupt"
+    0x080483a6: push   ebp
+    0x080483a7: mov    ebp, esp
+    0x080483a9: sub    esp, 0x08
+    0x080483ac: call   0x08048240<(func)trip_conditions_met>
+  0x080483b1 in function 0x080483a6 "simulate_interrupt"
+    0x080483b1: test   eax, eax
+    0x080483b3: je     0x080483ba
+  0x080483b5 in function 0x080483a6 "simulate_interrupt"
+    0x080483b5: call   0x08048280<(func)trip_breaker>
+  0x080483ba in function 0x080483a6 "simulate_interrupt"
+    0x080483ba: call   0x0804829b<(func)trip_breaker_unused_123>
+  0x080483bf in function 0x080483a6 "simulate_interrupt"
+    0x080483bf: call   0x080482fb<(func)trip_breaker_voltage_rand>
+  0x080482fb in function 0x080482fb "trip_breaker_voltage_rand"
+    0x080482fb: push   ebp
+    0x080482fc: mov    ebp, esp
+    0x080482fe: sub    esp, 0x28
+    0x08048301: movzx  eax, byte ds:[0x080c8180<(data)vars>]
+    0x08048308: movzx  eax, al
+    0x0804830b: mov    edx, eax
+    0x0804830d: shl    edx, 0x08
+    0x08048310: movzx  eax, byte ds:[0x080c8182]
+    0x08048317: movzx  eax, al
+    0x0804831a: lea    eax, [edx + eax]
+    0x0804831d: mov    dword ss:[ebp + 0xf0<-16>], eax
+    0x08048320: movzx  eax, byte ds:[0x080c8185]
+    0x08048327: test   al, al
+    0x08048329: je     0x0804833c
+  0x0804832b in function 0x080482fb "trip_breaker_voltage_rand"
+    0x0804832b: mov    eax, dword ds:[0x080c8a84<(data)pod>]
+    0x08048330: cmp    dword ss:[ebp + 0xf0<-16>], eax
+    0x08048333: jne    0x0804833c
+  0x08048335 in function 0x080482fb "trip_breaker_voltage_rand"
+    0x08048335: mov    eax, 0x00000001
+    0x0804833a: jmp    0x08048341
+  0x08048341 in function 0x080482fb "trip_breaker_voltage_rand"
+    0x08048341: mov    dword ss:[ebp + 0xf4<-12>], eax
+    0x08048344: cmp    dword ss:[ebp + 0xf4<-12>], 0x00
+    0x08048348: je     0x08048377
+  0x0804834a in function 0x080482fb "trip_breaker_voltage_rand"
+    0x0804834a: call   0x08048280<(func)trip_breaker>
+  0x08048280 in function 0x08048280 "trip_breaker"
+    0x08048280: push   ebp
+    0x08048281: mov    ebp, esp
+    0x08048283: sub    esp, 0x18
+    0x08048286: mov    byte ds:[0x080c8185], 0x00
+    0x0804828d: mov    dword ss:[esp], 0x080a9948<"*** BREAKER TRIPPED">
+    0x08048294: call   0x0804b1b0<(func)_IO_puts>
